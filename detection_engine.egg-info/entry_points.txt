@@ -1,0 +1,2 @@
+[console_scripts]
+scan = detection_engine.run_engine:main

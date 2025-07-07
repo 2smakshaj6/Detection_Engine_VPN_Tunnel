@@ -1,0 +1,13 @@
+MANIFEST.in
+README.md
+setup.py
+detection_engine/__init__.py
+detection_engine/run_engine.py
+detection_engine.egg-info/PKG-INFO
+detection_engine.egg-info/SOURCES.txt
+detection_engine.egg-info/dependency_links.txt
+detection_engine.egg-info/entry_points.txt
+detection_engine.egg-info/requires.txt
+detection_engine.egg-info/top_level.txt
+detection_engine/config/__init__.py
+detection_engine/config/suspicious_asns.json
