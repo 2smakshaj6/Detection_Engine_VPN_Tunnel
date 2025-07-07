@@ -1,0 +1,23 @@
+[
+  { "asn": "AS14061", "provider": "DigitalOcean, LLC" },
+  { "asn": "AS16509", "provider": "Amazon.com, Inc. (AWS)" },
+  { "asn": "AS13335", "provider": "Cloudflare, Inc." },
+  { "asn": "AS9009", "provider": "M247 Ltd" },
+  { "asn": "AS29073", "provider": "Quasi Networks Ltd" },
+  { "asn": "AS16276", "provider": "OVH SAS" },
+  { "asn": "AS54600", "provider": "PEG TECH INC" },
+  { "asn": "AS12876", "provider": "Online SAS / Scaleway" },
+  { "asn": "AS20473", "provider": "Choopa / Vultr" },
+  { "asn": "AS396982", "provider": "Proton AG" },
+  { "asn": "AS60781", "provider": "LeaseWeb Netherlands B.V." },
+  { "asn": "AS397270", "provider": "Private Layer Inc." },
+  { "asn": "AS30083", "provider": "HEG US Inc. (GoDaddy)" },
+  { "asn": "AS202425", "provider": "WorldStream B.V." },
+  { "asn": "AS202018", "provider": "NetProtect (Encrypt.me, StrongVPN)" },
+  { "asn": "AS51559", "provider": "Hostkey B.V." },
+  { "asn": "AS9002", "provider": "RETN Ltd" },
+  { "asn": "AS62713", "provider": "OneProvider" },
+  { "asn": "AS399230", "provider": "Sharktech" },
+  { "asn": "AS200759", "provider": "Xtom (xtom.com)" },
+  { "asn": "AS262287", "provider": "HIVELOCITY" }
+]
