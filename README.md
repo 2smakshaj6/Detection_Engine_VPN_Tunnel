@@ -1,5 +1,8 @@
-# README.md
 # VPN & Tunnel Detection CLI Tool
+[![PyPI version](https://img.shields.io/pypi/v/detection_engine)](https://pypi.org/project/detection_engine/)
+[![Python version](https://img.shields.io/pypi/pyversions/detection_engine)](https://pypi.org/project/detection_engine/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Downloads](https://static.pepy.tech/badge/detection_engine)](https://pepy.tech/project/detection_engine)
 
 This project is a Python-based command-line tool that helps you detect whether an IP address is likely coming from a VPN, proxy, or abusive source. It uses a combination of IP metadata, ASN heuristics, and optional third-party API lookups for deeper inspection.
 
