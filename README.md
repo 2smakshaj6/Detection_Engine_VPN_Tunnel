@@ -41,30 +41,35 @@ This registers the `vpnscan` command globally in your environment.
 ---
 
 ## API Keys (Optional, for advanced detection)
-To enable IP reputation scoring, manually add your API keys directly into these files:
+To enhance detection accuracy with threat intelligence data, you can provide your own API keys for:
+- **AbuseIPDB** (IP reputation reports)
+- **IPQualityScore** (VPN/proxy/fraud scoring)
 
-**In `detection_engine/engine/abuseipdb_checker.py`**
-```python
-api_key = "your_actual_abuseipdb_api_key"
+Instead of hardcoding your API keys, we recommend using a `.env` file for safety:
+
+### How to set up your `.env` file:
+1. Create a copy of the example file:
+```bash
+cp .env.example .env
+```
+2. Edit `.env` and paste your actual keys:
+```
+ABUSEIPDB_API_KEY=your_abuseipdb_key
+IPQUALITYSCORE_API_KEY=your_ipqs_key
 ```
 
-**In `detection_engine/engine/ipqualityscore_checker.py`**
-```python
-api_key = "your_actual_ipqs_api_key"
-```
-
-You can skip this step if you only want to use free detection features.
+We automatically load these with `os.getenv(...)`. No secrets are stored in the codebase.
 
 ---
 
 ## Usage
 Run the tool using:
 ```bash
-scan --ip <IP_ADDRESS>
+vpnscan --ip <IP_ADDRESS>
 ```
 Example:
 ```bash
-scan --ip 104.28.228.78
+vpnscan --ip 104.28.228.78
 ```
 
 You’ll see output like this:
@@ -98,21 +103,21 @@ DISCLAIMER        : This result indicates whether the IP shows characteristics o
 
 ## Project Structure
 ```
-```
 pymod_detection_engine/
+├── .env.example         ← Example env file for API keys
 ├── detection_engine/
 │   ├── __init__.py
 │   ├── run_engine.py
 │   ├── config/
 │   │   ├── __init__.py
 │   │   └── suspicious_asns.json
-│   ├── engine/
-│   │   ├── __init__.py
-│   │   ├── ipinfo_wrapper.py
-│   │   ├── heuristics.py
-│   │   ├── detection_engine.py
-│   │   ├── abuseipdb_checker.py
-│   │   └── ipqualityscore_checker.py
+│   └── engine/
+│       ├── __init__.py
+│       ├── ipinfo_wrapper.py
+│       ├── heuristics.py
+│       ├── detection_engine.py
+│       ├── abuseipdb_checker.py
+│       └── ipqualityscore_checker.py
 ├── requirements.txt
 ├── setup.py
 ├── MANIFEST.in
