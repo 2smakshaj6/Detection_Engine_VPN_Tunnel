@@ -9,3 +9,47 @@ venv/
 .env
 *.log
 .ipynb_checkpoints/
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+.detenv/
+.deteng/
+
+# Environment variables
+.env
+
+
+# Python egg metadata
+*.egg-info/
+*.egg
+dist/
+build/
+
+# Log and runtime files
+*.log
+*.pid
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE/editor configs
+.vscode/
+.idea/
+*.swp
+
+# Upload folders
+uploads/
+
+# Cache or temp
+*.cache
+*.sqlite3
+
+# PyPI build artifacts
+*.whl
+*.tar.gz
