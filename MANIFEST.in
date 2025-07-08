@@ -1,1 +1,2 @@
 recursive-include detection_engine/config *.json
+recursive-include detection_engine *
