@@ -1,16 +1,178 @@
 Metadata-Version: 2.4
 Name: detection_engine
-Version: 0.1.4
-Summary: VPN/Proxy detection engine with heuristics and optional API lookups
+Version: 0.1.5
+Summary: Detect VPN, Proxy, Tor, Botnets & abusive IPs using hybrid threat intelligence
+Home-page: https://github.com/2smakshaj6/Detection_Engine_VPN_Tunnel/tree/pypi-module
 Author: Akshaj S M
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Information Technology
+Classifier: Topic :: Security
 Requires-Python: >=3.7
+Description-Content-Type: text/markdown
 Requires-Dist: requests
 Requires-Dist: tqdm
+Requires-Dist: python-dotenv
 Dynamic: author
 Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
 Dynamic: requires-dist
 Dynamic: requires-python
 Dynamic: summary
+
+# VPN & Tunnel Detection CLI Tool
+
+[![PyPI version](https://img.shields.io/pypi/v/detection_engine)](https://pypi.org/project/detection_engine/)
+[![Python version](https://img.shields.io/pypi/pyversions/detection_engine)](https://pypi.org/project/detection_engine/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Downloads](https://static.pepy.tech/badge/detection_engine)](https://pepy.tech/project/detection_engine)
+
+This project is a Python-based command-line tool that helps you detect whether an IP address is likely coming from a VPN, proxy, or abusive source. It uses a combination of IP metadata, ASN heuristics, and optional third-party API lookups for deeper inspection.
+
+---
+
+## Features
+
+- Uses ASN and organization name heuristics to flag suspicious infrastructure
+- Geolocation and org data powered by [IPInfo](https://ipinfo.io/)
+- Optional integration with [AbuseIPDB](https://www.abuseipdb.com/) and [IPQualityScore](https://ipqualityscore.com/)
+- Checks against auto-updated threat feeds (Tor exit nodes, botnets, DDoS infra, etc.)
+- Confidence scoring (Low, Moderate, High)
+- Easy to use with `vpnscan --ip <IP>` command
+
+---
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/your-username/vpn-tunnel-detector.git
+cd vpn-tunnel-detector
+```
+
+2. (Optional) Set up a virtual environment:
+```bash
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. Install the tool locally in editable mode:
+```bash
+pip install --editable .
+```
+
+This gives you access to the global command `vpnscan`.
+
+---
+
+## API Keys (Optional but Recommended)
+
+To get deeper reputation data, you can plug in:
+
+- AbuseIPDB API Key
+- IPQualityScore API Key
+
+Set them securely using a `.env` file.
+
+### Example Setup:
+
+1. Create the file:
+```bash
+cp .env.example .env
+```
+
+2. Edit the file:
+```
+ABUSEIPDB_API_KEY=your_abuseipdb_key
+IPQUALITYSCORE_API_KEY=your_ipqs_key
+```
+
+The app will auto-load them without hardcoding into the source.
+
+---
+
+## Usage
+
+Run the scan like this:
+
+```bash
+vpnscan --ip 104.28.228.78
+```
+
+You’ll get an output like:
+
+```
+------------------------ Welcome to the VPN & Threat Detection CLI Tool ------------------------
+
+This tool checks if an IP address is associated with VPNs, proxies, abuse sources, or threat feeds (e.g. Tor, Botnets).
+It uses heuristics, APIs, and auto-updated IP threat feeds for comprehensive detection.
+
+You can cancel the operation at any time by pressing Ctrl+C.
+
+Starting the detection process...
+
+Detection Result
+------------------
+IP                : 104.28.228.78
+ORG               : Cloudflare, Inc.
+ASN               : AS13335
+Location          : Washington, US
+Is Suspicious     : Yes
+Detection Reason  : ASN AS13335 is frequently used by VPN or hosting providers. Org name includes 'cloud', commonly seen in VPN or hosting services.
+Abuse Score       : 100
+IPQS Fraud Score  : 100
+Confidence Level  : High
+Disclaimer        : This result indicates whether the IP shows characteristics of VPN/proxy, abuse, or known threat activity. It does not imply malicious intent. Many users use VPNs for privacy or remote work.
+
+Threat Feed Matches
+--------------------
+No matches found in known threat feeds.
+```
+
+---
+
+## Project Structure
+
+```
+pymod_detection_engine/
+├── detection_engine/
+│   ├── __init__.py
+│   ├── run_engine.py
+│   ├── config/
+│   │   ├── __init__.py
+│   │   └── suspicious_asns.json
+│   ├── engine/
+│   │   ├── __init__.py
+│   │   ├── detection_engine.py
+│   │   ├── heuristics.py
+│   │   ├── ipinfo_wrapper.py
+│   │   ├── threat_feeds.py
+│   │   ├── abuseipdb_checker.py
+│   │   └── ipqualityscore_checker.py
+│   └── feeds/
+│       ├── __init__.py
+│       ├── fetch_feeds.py
+│       └── known_bad_ips.json
+├── .env.example
+├── requirements.txt
+├── setup.py
+├── MANIFEST.in
+├── README.md
+```
+
+---
+
+## License
+
+MIT License — use, fork, improve, or share with attribution.
+
+---
+
+## 🙋‍♂️ About
+
+This is a hobby project built for learning, awareness, and experimentation.  
+It’s not a replacement for professional threat intelligence platforms — but it’s a great start.  
+Feedback, ideas, or issues? Feel free to open one on GitHub.
