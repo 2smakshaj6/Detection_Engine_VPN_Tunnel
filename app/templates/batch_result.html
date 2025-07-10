@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Batch Detection Results</h3>
+<table>
+    <tr>
+        <th>IP</th>
+        <th>Is Suspicious</th>
+        <th>Confidence</th>
+    </tr>
+    {% for ip, result in results %}
+    <tr>
+        <td>{{ ip }}</td>
+        <td>{{ result.get('is_suspicious', 'N/A') }}</td>
+        <td>{{ result.get('ipqs_fraud_score', 'N/A') }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

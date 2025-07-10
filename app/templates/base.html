@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detection Engine</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    /* Navbar styling */
+    nav {
+      background-color: #111;
+      color: white;
+      padding: 1em 2em;
+    }
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .nav-title .home-link {
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1.4rem;
+    }
+    .nav-title .home-link:hover {
+      text-decoration: underline;
+    }
+    .nav-ip span {
+      color: #e63946;
+      font-weight: 600;
+    }
+
+    /* Body main content pattern background */
+    main {
+      background-image: url("/static/img/image.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: calc(80vh - 150px);
+      padding: 2rem 0 0.5rem 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    /* Footer positioning */
+    footer {
+      background-color: #2b2b2b;
+      color: #fff;
+      font-family: monospace;
+      text-align: center;
+      padding: 1.5rem 1rem;
+      font-size: 0.9rem;
+      margin-top: auto;
+    }
+    footer p {
+      margin: 0.3rem 0;
+    }
+    .marquee {
+      overflow: hidden;
+      white-space: nowrap;
+      box-sizing: border-box;
+    }
+    .marquee p {
+      display: inline-block;
+      padding-left: 100%;
+      animation: marquee 25s linear infinite;
+    }
+    @keyframes marquee {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-100%, 0); }
+    }
+
+    @media (max-width: 768px) {
+      .nav-container {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-container">
+      <div class="nav-title">
+        <a href="{{ url_for('main.index') }}" class="home-link">Detection Engine</a>
+      </div>
+      {% if my_ip %}
+      <div class="nav-ip">
+        Your IP: <span>{{ my_ip }}</span>
+      </div>
+      {% endif %}
+    </div>
+  </nav>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    <div class="marquee">
+        <p>⚠️ Disclaimer: This result indicates whether the IP shows characteristics of VPN/proxy or abusive usage. It does not imply malicious intent. Many users use VPNs for privacy or remote work.</p>
+      </div>
+    <p class="code-line">🛠 Hobby Project: Still under development with more features coming soon.</p>
+    <p class="code-line">📦 This project uses the <a href="https://pypi.org/project/detection-engine/" style="color:greenyellow; text-decoration: none;" target="_blank">detection_engine</a> Python module.</p>
+    <p class="code-line">pip install detection_engine</p>
+    <p class="code-line">Then use: from detection_engine import detect_ip</p>
+    <a href="https://github.com/2smakshaj6/Detection_Engine_VPN_Tunnel/tree/main" style="text-decoration: none;">
+      <button class="view-docs-btn">📄 View Docs</button>
+    </a>
+  </footer>
+</body>
+</html>

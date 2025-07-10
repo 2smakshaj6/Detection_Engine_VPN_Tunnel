@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="form-wrapper">
+  <h2>Check Any IP Address</h2>
+  <p>Use this tool to identify if an IP belongs to a VPN, proxy, or known abuse source.</p>
+
+  <!-- IP Search Form -->
+  <form action="{{ url_for('main.index') }}" method="post" class="ip-form">
+    <input type="text" name="ip" placeholder="Enter an IP address..." required class="ip-input">
+    <button type="submit" class="scan-btn">Scan</button>
+    <a href="{{ url_for('main.check_my_ip') }}" class="myip-btn">What's My IP?</a>
+  </form>
+
+  {% if result %}
+    <div class="result-preview">
+      <h4>Preview Detection Summary</h4>
+      <ul>
+        <li><strong>IP:</strong> {{ result.get('ip') }}</li>
+        <li><strong>Org:</strong> {{ result.get('org') }}</li>
+        <li><strong>Suspicious:</strong> {{ result.get('is_suspicious') }}</li>
+        <li><strong>Confidence:</strong> {{ result.get('confidence_level') }}</li>
+        <li><strong>Score:</strong> {{ result.get('ipqs_fraud_score') }}</li>
+      </ul>
+      <a href="{{ url_for('main.show_result', ip=result.get('ip')) }}" class="btn btn-primary">View Full Report</a>
+    </div>
+  {% endif %}
+</div>
+
+{% endblock %}

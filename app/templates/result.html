@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="top-bar">
+  <a href="{{ url_for('main.index') }}" class="btn-back">← Back</a>
+  <h2 class="top-title">IP Intelligence Result</h2>
+</div>
+
+<p class="subtitle">
+  We’ve analyzed the IP using multiple signals to detect VPN, proxy, hosting, and reputation scores.
+</p>
+
+<div class="result-flex">
+  <!-- LEFT -->
+  <div class="result-left">
+    <div class="result-card">
+      <h3>Detection Result for {{ ip }}</h3>
+      <ul>
+        <li>
+          <strong>IP:</strong> {{ result.get('ip') }}
+          <button class="copy-ip-btn" onclick="copyIP('{{ result.get('ip') }}')">Copy</button>
+          <span id="copyStatus" style="margin-left: 8px; font-size: 0.85rem; color: green;"></span>
+        </li>
+        <li><strong>ORG:</strong> {{ result.get('org') }}</li>
+        <li><strong>ASN:</strong> {{ result.get('asn') }}</li>
+        <li><strong>Location:</strong> {{ result.get('location') }}</li>
+        <li>
+          <strong>Is Suspicious:</strong>
+          <span class="{{ 'text-red' if result.get('is_suspicious') else 'text-green' }}">
+            {{ result.get('is_suspicious') }}
+          </span>
+        </li>
+        <li><strong>Detection Reason:</strong> {{ result.get('detection_reason') or 'None' }}</li>
+{% if result.get('threat_feed_matches') %}
+  <li><strong>Threat Feed Matches:</strong>
+    <ul style="margin-top: 5px;">
+      {% for match in result.get('threat_feed_matches') %}
+        <li style="margin-left: 1rem;">{{ match }}</li>
+      {% endfor %}
+    </ul>
+  </li>
+{% else %}
+  <li><strong>Threat Feed Matches:</strong> None</li>
+{% endif %}
+        <li><strong>Abuse Score:</strong> {{ result.get('abuse_score') }}</li>
+        <li><strong>IPQS Fraud Score:</strong> {{ result.get('ipqs_fraud_score') }}</li>
+        <li>
+          <strong>Confidence Level:</strong>
+          <span style="color: {{ 'red' if 'High' in result.get('confidence_level', '') else 'orange' if 'Moderate' in result.get('confidence_level', '') else 'green' }};">
+            {{ result.get('confidence_level') }}
+          </span>
+        </li>
+      </ul>
+
+      <form method="POST" action="{{ url_for('main.flag_ip') }}">
+        <input type="hidden" name="flagged_ip" value="{{ ip }}">
+        <button type="submit" class="flag-btn">Flag This IP</button>
+      </form>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div id="flash" class="flash-msg">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+  </div>
+
+  <!-- MIDDLE -->
+  <div class="result-middle">
+    {% set lat = result.get('latitude') %}
+    {% set lon = result.get('longitude') %}
+    {% if lat and lon and lat != 0 and lon != 0 %}
+      <img src="https://maps.googleapis.com/maps/api/staticmap?center={{ lat }},{{ lon }}&zoom=12&size=400x300&markers=color:red%7C{{ lat }},{{ lon }}&key={{ google_maps_key }}"
+        alt="Map location" class="map-img">
+    {% else %}
+      <div class="map-placeholder">Location not available</div>
+    {% endif %}
+  </div>
+
+  <!-- RIGHT -->
+  <div class="result-right">
+    <div class="result-card">
+      <h4 style="margin-bottom: 0.5rem;">Fraud Risk Meter</h4>
+      <canvas id="meter" width="300" height="150" style="max-width: 100%;"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- JS -->
+<script>
+  const score = {{ (result.get('ipqs_fraud_score') or 0) | tojson }};
+  const canvas = document.getElementById('meter');
+  if (canvas && score >= 0) {
+    const ctx = canvas.getContext('2d');
+    ctx.beginPath();
+    ctx.arc(150, 150, 100, Math.PI, 0);
+    ctx.strokeStyle = score > 70 ? 'red' : score > 40 ? 'orange' : 'green';
+    ctx.lineWidth = 15;
+    ctx.stroke();
+    ctx.font = '18px monospace';
+    ctx.fillText('Score: ' + score, 110, 140);
+  }
+
+  function copyIP(ip) {
+    const msg = document.getElementById("copyStatus");
+    navigator.clipboard.writeText(ip).then(() => {
+      msg.textContent = "Copied!";
+      setTimeout(() => {
+        msg.textContent = "";
+      }, 2000);
+    });
+  }
+
+  setTimeout(() => {
+    const flash = document.getElementById("flash");
+    if (flash) {
+      flash.style.display = "none";
+    }
+  }, 3000);
+</script>
+
+{% endblock %}
