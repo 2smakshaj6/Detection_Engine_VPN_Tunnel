@@ -1,9 +1,13 @@
 {
-    "version": 2,
-    "builds": [
-      { "src": "run.py", "use": "@vercel/python" }
-    ],
-    "routes": [
-      { "src": "/(.*)", "dest": "run.py" }
-    ]
+  "version": 2,
+  "builds": [
+    { "src": "index.py", "use": "@vercel/python" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "index.py" }
+  ],
+  "github": {
+    "enabled": true,
+    "branch": "flask_web"
   }
+}

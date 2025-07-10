@@ -8,8 +8,11 @@ def parse_file(file):
     return [line.strip() for line in lines if line.strip()]
 
 def get_client_ip(request):
-    # Attempts to retrieve client's IP address from request headers
-    return request.headers.get('X-Forwarded-For', request.remote_addr)
+    # Retrieves the real client IP address even behind proxies like Vercel
+    x_forwarded_for = request.headers.get('X-Forwarded-For')
+    if x_forwarded_for:
+        return x_forwarded_for.split(',')[0].strip()
+    return request.remote_addr
 
 def check_hibp(email):
     # Queries HaveIBeenPwned API for a given email address

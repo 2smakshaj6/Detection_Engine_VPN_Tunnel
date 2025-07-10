@@ -54,3 +54,4 @@ uploads/
 *.tar.gz
 
 flagged_ips.txt
+.vercel

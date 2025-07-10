@@ -13,9 +13,9 @@ def create_app():
     app.secret_key = os.getenv("SECRET_KEY", "development-placeholder-key")
 
     # Upload folder for IP input files (ensure directory exists)
-    upload_path = os.path.join(os.getcwd(), 'uploads')
-    os.makedirs(upload_path, exist_ok=True)
-    app.config['UPLOAD_FOLDER'] = upload_path
+    #upload_path = os.path.join(os.getcwd(), 'uploads')
+    #os.makedirs(upload_path, exist_ok=True)
+    #app.config['UPLOAD_FOLDER'] = upload_path
 
     # Register main blueprint
     from app.routes import main

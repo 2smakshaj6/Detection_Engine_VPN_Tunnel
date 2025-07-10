@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from detection_engine import detect_ip
+from app.utils import get_client_ip
 import requests
 import os
 
@@ -24,7 +25,7 @@ def index():
 @main.route('/result/<ip>')
 def show_result(ip):
     result = detect_ip(ip)
-    return render_template('result.html', ip=ip, result=result, my_ip=get_client_ip(), google_maps_key=os.getenv("GOOGLE_MAPS_API_KEY"))
+    return render_template('result.html', ip=ip, result=result, my_ip=get_client_ip(request), google_maps_key=os.getenv("GOOGLE_MAPS_API_KEY"))
 
 @main.route('/my-ip')
 def check_my_ip():
