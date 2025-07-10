@@ -42,10 +42,14 @@ def show_result(ip):
 
 @main.route('/my-ip')
 def check_my_ip():
-    user_ip = get_client_ip()
-    if user_ip:
-        return redirect(url_for('main.show_result', ip=user_ip))
-    flash("Could not retrieve your IP address.")
+    try:
+        user_ip = get_client_ip(request)
+        if user_ip:
+            return redirect(url_for('main.show_result', ip=user_ip))
+        else:
+            flash("Could not retrieve your IP address.", "error")
+    except Exception as e:
+        flash(f"An error occurred: {str(e)}", "error")
     return redirect(url_for('main.index'))
 
 @main.route('/flag-ip', methods=['POST'])
