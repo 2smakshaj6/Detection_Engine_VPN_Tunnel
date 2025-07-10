@@ -1,72 +1,143 @@
 # Detection Engine – Web Interface
 
-This is a personal project built to help identify whether an IP address is likely associated with a VPN, proxy, or other suspicious behavior. It offers a simple web interface that combines IP metadata, public API reputation scores, and custom heuristics to provide helpful context about a given IP.
+This is a simple project I built to help check whether an IP address might be using a VPN, proxy, Tor exit node, or be involved in suspicious activity. It’s powered by a Python backend and offers a clean web interface to explore IP intelligence in real time.
 
-## What This Project Does
+---
 
-- Allows you to check any IP address for suspicious characteristics
-- Displays organization, ASN, and geolocation data
-- Shows a confidence level based on multiple detection signals
-- Visualizes the IP’s location on a map and provides a reputation score meter
-- Offers a "What's My IP" button to instantly analyze your own IP
-- Optionally integrates with IPQualityScore and AbuseIPDB APIs for advanced results
+## What It Does
 
-## Who This Is For
+- Looks up IP addresses for red flags like VPNs, hosting services, Tor nodes, or botnet infrastructure
+- Uses IP metadata (like ISP, location, and ASN) to detect patterns
+- Checks against known abuse and fraud databases (optional)
+- Shows a confidence score based on combined signals
+- Maps the IP’s location using Google Maps
+- Includes a basic risk meter and an easy “What’s My IP” tool
+- Lets you flag any IP manually for review
 
-This tool is ideal for:
+---
 
-- Security enthusiasts and researchers
-- Developers building IP intelligence systems
-- Anyone curious about who might be behind a particular IP
-- Privacy-conscious individuals
+## Who It's For
 
-It’s meant to be a helpful, transparent starting point—not a definitive label for good or bad actors.
+This tool is meant for:
 
-## How to Use
+- Cybersecurity beginners or enthusiasts
+- Developers building tools with IP context
+- Anyone curious about who’s behind an IP address
+- Privacy-aware users wanting to check their own IP
 
-1. Visit the web interface
-2. Enter any IP address you want to investigate
-3. Click “Check IP”
-4. You’ll see a summary including ISP, location, ASN, and any red flags
-5. Optionally click “What’s My IP” to check your current IP address
+It’s not meant to judge good vs. bad — just to provide useful insights.
 
-## Powered by a Python Module
+---
 
-This web interface runs on top of a Python detection engine that you can install and use in your own projects:
+## How to Use It
+
+1. Visit the web interface (hosted on Vercel)
+2. Enter an IP address you want to check
+3. Click “Check IP” to get a full report
+4. You can also hit “What’s My IP” to analyze your current IP
+5. Optionally, flag any IP you find suspicious
+
+---
+
+## Use the Engine in Your Own Code
+
+The backend logic is available as a Python package. To install:
 
 ```bash
 pip install detection_engine
 ```
 
-Then in your code:
+To use it:
 
 ```python
 from detection_engine import detect_ip
-
 detect_ip("8.8.8.8")
 ```
 
-The backend uses IPInfo for IP metadata and can optionally pull abuse and fraud scores from third-party services if API keys are configured.
+This returns a dictionary of results you can use however you want.
 
-## Technologies Used
+---
 
-- Python (Flask)
-- HTML and CSS (no frameworks)
-- IPInfo, IPQualityScore, and AbuseIPDB (for metadata and scores)
-- Google Maps (for visualization)
+## Tor Node Check (Manual)
 
-## Project Status
+Want to check if an IP is part of the Tor exit node network?
 
-This project is still under development. More features will be added in future updates, including:
+You can do this with:
 
-- Batch IP uploads (CSV or TXT)
-- Breach email lookups
-- Dark mode and accessibility enhancements
+```bash
+curl -s https://check.torproject.org/exit-addresses | grep "^ExitAddress"   
+```
+
+Replace `<ip-address>` with any IP you want to check. If it’s listed, you’ll see a match.
+
+---
+
+## Generate a Secret Key
+
+For your Flask app, you’ll need a secure secret key. You can create one like this:
+
+```python
+python -c "import secrets; print(secrets.token_urlsafe(32))"
+```
+
+Then add it to your `.env` file and your Vercel environment settings:
+
+```
+SECRET_KEY=your-long-random-string
+```
+
+---
+
+## File Structure
+
+```
+deteng_web/
+├── app/
+│   ├── __init__.py               # App factory and config
+│   ├── routes.py                 # All Flask routes
+│   ├── utils.py                  # Helper functions (file parsing, IP, breach check)
+│   ├── templates/                # HTML templates
+│   │   ├── base.html
+│   │   ├── index.html
+│   │   ├── result.html
+│   │   └── batch_result.html
+│   └── static/                   # Static files (CSS, images)
+│       ├── css/
+│       │   └── styles.css
+│       └── img/
+│           └── image.png
+├── uploads/                      # Stores uploaded .txt/.csv files
+├── index.py                      # App entry point
+├── .env                          # Environment variables (not committed)
+├── .env.example                  # Example env for setup
+├── flagged_ips.txt              # IPs manually flagged from the site
+├── .gitignore
+├── .vercelignore
+├── requirements.txt             # Python dependencies
+├── vercel.json                  # Vercel configuration
+└── README.md
+```
+
+---
+
+## What’s Next
+
+This is still a work-in-progress. Here’s what’s coming soon:
+
+- Batch IP scanning from TXT or CSV files
+- Email breach check using HaveIBeenPwned
+- Dark mode and UI polish
+- Safer flagging and logging features
+- And many more updates....!
+
+---
 
 ## License
 
-This project is open source under the MIT license. Use it however you like, with or without changes.
+MIT License — feel free to use, remix, or build on top of it.
 
-## A Note from the Developer
+---
 
-This started as a curiosity-driven weekend project. It’s not perfect, but it’s designed to be honest, educational, and practical. I’m open to suggestions, improvements, or just hearing what you think.
+## A Personal Note
+
+I started this project as a weekend experiment, and it’s grown into something I actually use and enjoy building. It’s still improving, but I wanted to share it early. If it’s helpful, feel free to fork or suggest improvements. I’m open to feedback.

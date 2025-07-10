@@ -38,8 +38,11 @@ def check_my_ip():
 def flag_ip():
     flagged_ip = request.form.get('flagged_ip')
     if flagged_ip:
-        with open('flagged_ips.txt', 'a') as f:
-            f.write(f"{flagged_ip}\n")
-        flash(f"IP {flagged_ip} has been flagged for review.", 'success')
+        try:
+            with open('flagged_ips.txt', 'a') as f:
+                f.write(f"{flagged_ip}\n")
+            flash(f"IP {flagged_ip} has been flagged for review.", 'success')
+        except Exception as e:
+            flash(f"Error flagging IP: {e}", 'danger')
     return redirect(url_for('main.show_result', ip=flagged_ip))
 

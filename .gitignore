@@ -52,3 +52,5 @@ uploads/
 # PyPI build artifacts
 *.whl
 *.tar.gz
+
+flagged_ips.txt
