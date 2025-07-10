@@ -13,7 +13,15 @@ KEYWORD_SCORES = {
     "hosting": 3,
     "server": 3,
     "colo": 3,
-    "cloud": 2
+    "cloud": 2,
+    "dedicated": 2,
+    "vps": 3,
+    "tunnel": 3,
+    "datacenter": 3,
+    "ssh": 2,
+    "rented": 2,
+    "infra": 2,
+    "host": 2
 }
 
 

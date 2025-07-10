@@ -16,3 +16,8 @@ detection_engine/engine/detection_engine.py
 detection_engine/engine/heuristics.py
 detection_engine/engine/ipinfo_wrapper.py
 detection_engine/engine/ipqualityscore_checker.py
+detection_engine/engine/known_bad_ips.json
+detection_engine/engine/threat_feeds.py
+detection_engine/feeds/__init__.py
+detection_engine/feeds/fetch_feeds.py
+detection_engine/feeds/known_bad_ips.json
