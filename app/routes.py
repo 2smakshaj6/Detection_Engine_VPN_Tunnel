@@ -24,8 +24,21 @@ def index():
 
 @main.route('/result/<ip>')
 def show_result(ip):
-    result = detect_ip(ip)
-    return render_template('result.html', ip=ip, result=result, my_ip=get_client_ip(request), google_maps_key=os.getenv("GOOGLE_MAPS_API_KEY"))
+    try:
+        result = detect_ip(ip)
+        return render_template(
+            'result.html',
+            ip=ip,
+            result=result,
+            my_ip=get_client_ip(request),
+            google_maps_key=os.getenv("GOOGLE_MAPS_API_KEY")
+        )
+    except Exception as e:
+        # This logs the actual error
+        import logging
+        logging.error(f"Error detecting IP {ip}: {e}", exc_info=True)
+        flash("Something went wrong while analyzing the IP.", "danger")
+        return redirect(url_for('main.index'))
 
 @main.route('/my-ip')
 def check_my_ip():
