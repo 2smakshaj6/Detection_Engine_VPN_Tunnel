@@ -6,11 +6,11 @@ import os
 
 main = Blueprint('main', __name__)
 
-def get_public_ip():
-    try:
-        return requests.get('https://api64.ipify.org?format=json').json()['ip']
-    except:
-        return None
+#def get_public_ip():
+ #   try:
+  #      return requests.get('https://api64.ipify.org?format=json').json()['ip']
+   # except:
+    #    return None
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
@@ -20,7 +20,7 @@ def index():
         ip = request.form.get('ip')
         if ip:
             return redirect(url_for('main.show_result', ip=ip))
-    return render_template('index.html', ip=ip, result=result, my_ip=get_public_ip())
+    return render_template('index.html', ip=ip, result=result, my_ip=get_client_ip(request))
 
 @main.route('/result/<ip>')
 def show_result(ip):
