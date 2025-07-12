@@ -4,7 +4,7 @@
 # 1. Fetches IP metadata (IPInfo)
 # 2. Applies heuristic rules (suspicious ASNs or orgs)
 # 3. Pulls reputation scores from AbuseIPDB and IPQualityScore (optional)
-# 4. Checks against known bad IP feeds (Tor, Botnet, Spamhaus, etc)
+# 4. Checks against known bad IP feeds (Tor, Botnet, DDoS, Spamhaus, etc)
 # 5. Returns a structured result with confidence scoring
 # ---------------------------------------------------
 
@@ -13,7 +13,6 @@ from .heuristics import analyze_with_heuristics
 from .abuseipdb_checker import check_abuseipdb
 from .ipqualityscore_checker import check_ipqs
 from .threat_feeds import is_ip_in_threat_feeds
-
 
 def detect_ip(ip):
     # Step 1: Fetch metadata from IPInfo
@@ -83,5 +82,5 @@ def detect_ip(ip):
         "ipqs_fraud_score": fraud_score,
         "confidence_level": confidence,
         "disclaimer": disclaimer,
-        "threat_feed_matches": threat_matches if threat_matches else [] 
+        "threat_feed_matches": threat_matches if threat_matches else []
     }

@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="detection_engine",
-    version="0.1.5",
+    version="0.1.6",
     author="Akshaj S M",
     description="Detect VPN, Proxy, Tor, Botnets & abusive IPs using hybrid threat intelligence",
     long_description=long_description,

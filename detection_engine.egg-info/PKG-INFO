@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: detection_engine
-Version: 0.1.5
+Version: 0.1.6
 Summary: Detect VPN, Proxy, Tor, Botnets & abusive IPs using hybrid threat intelligence
 Home-page: https://github.com/2smakshaj6/Detection_Engine_VPN_Tunnel/tree/pypi-module
 Author: Akshaj S M
