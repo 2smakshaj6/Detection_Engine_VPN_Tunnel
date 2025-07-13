@@ -1,7 +1,12 @@
-venv/
+.venv/
+env/
 __pycache__/
-.env
-.env.example
 *.pyc
 *.pyo
+*.pyd
 .DS_Store
+.git/
+*.log
+tests/
+node_modules/
+.deteng/
