@@ -41,7 +41,10 @@ def analyze_with_heuristics(ip_data):
     - Org name contains keywords like 'vpn', 'proxy', etc.
     """
     org = ip_data.get("org", "").lower()
-    asn = ip_data.get("org", "").split()[0].upper() if "org" in ip_data else "N/A"
+    try:
+        asn = ip_data.get("org", "").split()[0].upper()
+    except IndexError:
+        asn = "N/A"
 
     score = 0
     reasons = []
