@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<!-- ============================ Top Navigation Section ============================ -->
 <div class="top-bar">
   <a href="{{ url_for('main.index') }}" class="btn-back">← Back</a>
   <h2 class="top-title">IP Intelligence Result</h2>
@@ -10,8 +11,10 @@
   We’ve analyzed the IP using multiple signals to detect VPN, proxy, hosting, and reputation scores.
 </p>
 
+<!-- ============================ Result Display Section ============================ -->
 <div class="result-flex">
-  <!-- LEFT -->
+
+  <!-- ====== LEFT PANEL: IP Details ====== -->
   <div class="result-left">
     <div class="result-card">
       <h3>Detection Result for {{ ip }}</h3>
@@ -31,19 +34,22 @@
           </span>
         </li>
         <li><strong>Detection Reason:</strong> {{ result.get('detection_reason') or 'None' }}</li>
-{% if result.get('threat_feed_matches') %}
-  <li><strong>Threat Feed Matches:</strong>
-    <ul style="margin-top: 5px;">
-      {% for match in result.get('threat_feed_matches') %}
-        <li style="margin-left: 1rem;">{{ match }}</li>
-      {% endfor %}
-    </ul>
-  </li>
-{% else %}
-  <li><strong>Threat Feed Matches:</strong> None</li>
-{% endif %}
+
+        {% if result.get('threat_feed_matches') %}
+          <li><strong>Threat Feed Matches:</strong>
+            <ul style="margin-top: 5px;">
+              {% for match in result.get('threat_feed_matches') %}
+                <li style="margin-left: 1rem;">{{ match }}</li>
+              {% endfor %}
+            </ul>
+          </li>
+        {% else %}
+          <li><strong>Threat Feed Matches:</strong> None</li>
+        {% endif %}
+
         <li><strong>Abuse Score:</strong> {{ result.get('abuse_score') }}</li>
         <li><strong>IPQS Fraud Score:</strong> {{ result.get('ipqs_fraud_score') }}</li>
+
         <li>
           <strong>Confidence Level:</strong>
           <span style="color: {{ 'red' if 'High' in result.get('confidence_level', '') else 'orange' if 'Moderate' in result.get('confidence_level', '') else 'green' }};">
@@ -52,11 +58,13 @@
         </li>
       </ul>
 
+      <!-- IP Flagging Button -->
       <form method="POST" action="{{ url_for('main.flag_ip') }}">
         <input type="hidden" name="flagged_ip" value="{{ ip }}">
         <button type="submit" class="flag-btn">Flag This IP</button>
       </form>
 
+      <!-- Flash Messages (e.g. IP flagged success) -->
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
           {% for category, message in messages %}
@@ -67,29 +75,32 @@
     </div>
   </div>
 
-  <!-- MIDDLE -->
+  <!-- ====== MIDDLE PANEL: Google Map ====== -->
   <div class="result-middle">
     {% set lat = result.get('latitude') %}
     {% set lon = result.get('longitude') %}
     {% if lat and lon and lat != 0 and lon != 0 %}
-      <img src="https://maps.googleapis.com/maps/api/staticmap?center={{ lat }},{{ lon }}&zoom=12&size=400x300&markers=color:red%7C{{ lat }},{{ lon }}&key={{ google_maps_key }}"
+      <img
+        src="https://maps.googleapis.com/maps/api/staticmap?center={{ lat }},{{ lon }}&zoom=12&size=400x300&markers=color:red%7C{{ lat }},{{ lon }}&key={{ google_maps_key }}"
         alt="Map location" class="map-img">
     {% else %}
       <div class="map-placeholder">Location not available</div>
     {% endif %}
   </div>
 
-  <!-- RIGHT -->
+  <!-- ====== RIGHT PANEL: Risk Meter Visualization ====== -->
   <div class="result-right">
     <div class="result-card">
       <h4 style="margin-bottom: 0.5rem;">Fraud Risk Meter</h4>
       <canvas id="meter" width="300" height="150" style="max-width: 100%;"></canvas>
     </div>
   </div>
+
 </div>
 
-<!-- JS -->
+<!-- ============================ Scripts ============================ -->
 <script>
+  // Risk Meter Drawing Based on IPQS Fraud Score
   const score = {{ (result.get('ipqs_fraud_score') or 0) | tojson }};
   const canvas = document.getElementById('meter');
   if (canvas && score >= 0) {
@@ -103,21 +114,19 @@
     ctx.fillText('Score: ' + score, 110, 140);
   }
 
+  // Copy IP to clipboard with confirmation message
   function copyIP(ip) {
     const msg = document.getElementById("copyStatus");
     navigator.clipboard.writeText(ip).then(() => {
       msg.textContent = "Copied!";
-      setTimeout(() => {
-        msg.textContent = "";
-      }, 2000);
+      setTimeout(() => { msg.textContent = ""; }, 2000);
     });
   }
 
+  // Auto-hide flash message
   setTimeout(() => {
     const flash = document.getElementById("flash");
-    if (flash) {
-      flash.style.display = "none";
-    }
+    if (flash) flash.style.display = "none";
   }, 3000);
 </script>
 
