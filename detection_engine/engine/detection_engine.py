@@ -62,13 +62,19 @@ def detect_ip(ip):
     else:
         confidence = "Low"
 
+    # Step 8: Determine final detection reason
+    if not is_suspicious and ipqs_data.get("vpn"):
+        reason = ipqs_data.get("reason") or "Likely VPN usage based on provider signals"
+    elif not is_suspicious:
+        reason = ipqs_data.get("reason") or "No suspicious traits detected"
+
     # Final message to remind users of proper context
     disclaimer = (
         "This result indicates whether the IP shows characteristics of VPN/proxy, abuse, or known threat activity. "
         "It does not imply malicious intent. Many users use VPNs for privacy or remote work."
     )
 
-    # Step 8: Return structured result
+    # Step 9: Return structured result
     return {
         "ip": ip,
         "org": org_name,
@@ -77,7 +83,7 @@ def detect_ip(ip):
         "latitude": latitude,
         "longitude": longitude,
         "is_suspicious": is_suspicious or ipqs_data.get("vpn", False),
-        "detection_reason": reason if is_suspicious else ipqs_data.get("reason", "None"),
+        "detection_reason": reason,
         "abuse_score": abuse_score,
         "ipqs_fraud_score": fraud_score,
         "confidence_level": confidence,
