@@ -20,20 +20,23 @@
       <h3>Detection Result for {{ ip }}</h3>
       <ul>
         <li>
-          <strong>IP:</strong> {{ result.get('ip') }}
-          <button class="copy-ip-btn" onclick="copyIP('{{ result.get('ip') }}')">Copy</button>
+          <strong>IP:</strong> {{ result.get('ip', 'N/A') }}
+          <button class="copy-ip-btn" onclick="copyIP('{{ result.get('ip', '') }}')">Copy</button>
           <span id="copyStatus" style="margin-left: 8px; font-size: 0.85rem; color: green;"></span>
         </li>
-        <li><strong>ORG:</strong> {{ result.get('org') }}</li>
-        <li><strong>ASN:</strong> {{ result.get('asn') }}</li>
-        <li><strong>Location:</strong> {{ result.get('location') }}</li>
+        <li><strong>ORG:</strong> {{ result.get('org', 'N/A') }}</li>
+        <li><strong>ASN:</strong> {{ result.get('asn', 'N/A') }}</li>
+        <li><strong>Location:</strong> {{ result.get('location', 'N/A') }}</li>
         <li>
           <strong>Is Suspicious:</strong>
           <span class="{{ 'text-red' if result.get('is_suspicious') else 'text-green' }}">
             {{ result.get('is_suspicious') }}
           </span>
         </li>
-        <li><strong>Detection Reason:</strong> {{ result.get('detection_reason') or 'None' }}</li>
+        <li>
+          <strong>Detection Reason:</strong>
+          {{ result.get('detection_reason') if result.get('detection_reason') else 'No suspicious signals detected' }}
+        </li>
 
         {% if result.get('threat_feed_matches') %}
           <li><strong>Threat Feed Matches:</strong>
@@ -44,16 +47,20 @@
             </ul>
           </li>
         {% else %}
-          <li><strong>Threat Feed Matches:</strong> None</li>
+          <li><strong>Threat Feed Matches:</strong> None found in current feeds</li>
         {% endif %}
 
-        <li><strong>Abuse Score:</strong> {{ result.get('abuse_score') }}</li>
-        <li><strong>IPQS Fraud Score:</strong> {{ result.get('ipqs_fraud_score') }}</li>
+        <li><strong>Abuse Score:</strong> {{ result.get('abuse_score', 'N/A') }}</li>
+        <li><strong>IPQS Fraud Score:</strong> {{ result.get('ipqs_fraud_score', 'N/A') }}</li>
 
         <li>
           <strong>Confidence Level:</strong>
-          <span style="color: {{ 'red' if 'High' in result.get('confidence_level', '') else 'orange' if 'Moderate' in result.get('confidence_level', '') else 'green' }};">
-            {{ result.get('confidence_level') }}
+          {% set confidence = result.get('confidence_level', 'Low') %}
+          <span style="color: 
+            {{ 'red' if 'High' in confidence else 
+               'orange' if 'Moderate' in confidence else 
+               'green' }}">
+            {{ confidence }}
           </span>
         </li>
       </ul>
